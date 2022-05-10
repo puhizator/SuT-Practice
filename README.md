@@ -1,3 +1,3 @@
 # SuT-Practice
 
-Asparuh Branch
+Main Branch
