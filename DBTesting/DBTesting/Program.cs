@@ -9,6 +9,7 @@ namespace DBTesting
             Console.WriteLine("Hello World!");
             Console.WriteLine("Just a test");
             Console.WriteLine("Check if protection rule for 1 reviewer is working");
+            Console.WriteLine("Working");
         }
     }
 }
