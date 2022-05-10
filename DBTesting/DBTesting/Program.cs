@@ -6,11 +6,8 @@ namespace DBTesting
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            Console.WriteLine("Just a test");
-            Console.WriteLine("Check if protection rule for 1 reviewer is working");
-            Console.WriteLine("Working");
-            Console.WriteLine("A new rule");
+            Console.WriteLine("Test if I as owner can merge withour reviewer");
+
 
         }
     }
