@@ -10,6 +10,8 @@ namespace DBTesting
             Console.WriteLine("Just a test");
             Console.WriteLine("Check if protection rule for 1 reviewer is working");
             Console.WriteLine("Working");
+            Console.WriteLine("A new rule");
+
         }
     }
 }
