@@ -1,5 +1,6 @@
 using DBTesting.DataContext;
 using DBTesting.Models;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using TechTalk.SpecFlow;
@@ -22,6 +23,20 @@ namespace DBTesting.StepDefinitions
         public void GivenGetAllUsers()
         {
             var dbSet = _repo.Repository.GetAll();
+
+            var first = _repo.Repository.GetFirst();
+
+            var get = _repo.Repository.Get(entity => entity.FirstName.Contains("an"));
+
+            foreach (var user in get)
+            {
+                Assert.Multiple(() =>
+                {
+                    Assert.That(user.FirstName.Contains("an"), "an not found");
+                    Assert.That(user.FirstName.Contains("a"), "a not found");
+                }
+                );
+            }
 
             Console.WriteLine("x");
         }

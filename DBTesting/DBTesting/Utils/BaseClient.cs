@@ -56,6 +56,12 @@ namespace DBTesting.Utils
             return context.Set<TEntity>().AsNoTracking().Count(predicate);
         }
 
+        public void Create(TEntity entity)
+        {
+            context.Set<TEntity>().Add(entity);
+            context.SaveChanges();
+        }
+
         public void Update(TEntity entity)
         {
             context.Set<TEntity>().Update(entity);
