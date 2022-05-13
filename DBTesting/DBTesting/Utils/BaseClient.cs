@@ -36,7 +36,6 @@ namespace DBTesting.Utils
 
             return entity;
         }
-
         public IEnumerable<TEntity> GetAll()
         {
             return context.Set<TEntity>().AsNoTracking().ToList();
