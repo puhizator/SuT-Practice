@@ -1,6 +1,6 @@
-﻿Feature: GetAllUsers
+﻿@DB
+Feature: GetAllUsers
 
 
-@DB
 Scenario: Get all users
 	Given Get all users
