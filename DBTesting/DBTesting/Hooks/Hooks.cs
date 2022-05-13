@@ -4,10 +4,9 @@ using TechTalk.SpecFlow;
 namespace DBTesting.Hooks
 {
     [Binding]
-    [Scope(Feature = "GetAllUsers")]
     public sealed class Hooks
     {
-        [BeforeFeature]
+        [BeforeScenario("DB")]
 
         public static void FeatureSetUp(FeatureContext featureContext)
         {
