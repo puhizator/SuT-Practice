@@ -60,7 +60,11 @@ namespace DBTesting.Utils
             context.Set<TEntity>().Add(entity);
             context.SaveChanges();
         }
-
+        public void AddRange(IList<TEntity> entities)
+        {
+            context.Set<TEntity>().AddRange(entities);
+            context.SaveChanges();
+        }
         public void Update(TEntity entity)
         {
             context.Set<TEntity>().Update(entity);
