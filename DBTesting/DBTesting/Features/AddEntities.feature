@@ -1,7 +1,8 @@
 ﻿@DB
 Feature: AddEntities
 
-A short summary of the feature
+Add entity to DB
+
 @deleteEntity
 Scenario: AddSingleEntity
 	When I add single Entity
