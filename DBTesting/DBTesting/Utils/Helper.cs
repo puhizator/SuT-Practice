@@ -16,5 +16,13 @@ namespace DBTesting.Utils
 
                 return email;
         }
+
+        internal static int GetRandomIntFrom1To10()
+        {
+            Random random = new Random();
+            int number = random.Next(1, 10);
+
+            return number;
+        }
     }
 }

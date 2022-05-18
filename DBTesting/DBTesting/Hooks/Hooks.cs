@@ -1,4 +1,5 @@
 ﻿using DBTesting.DataContext;
+using System.Collections.Generic;
 using TechTalk.SpecFlow;
 
 namespace DBTesting.Hooks
@@ -14,11 +15,24 @@ namespace DBTesting.Hooks
         }
 
         [AfterScenario]
-        [Scope(Tag = "deleteEntity")]
+        [Scope(Tag = "deleteSingleEntity")]
 
         public static void DeleteUser(ScenarioContext scenarioContext, MainRepository repo)
         {
             repo.Repository.Delete(scenarioContext.Get<int>("lastUserID"));
+        }
+
+        [AfterScenario]
+        [Scope(Tag = "deleteMultipleEntities")]
+
+        public static void DeleteUsers(ScenarioContext scenarioContext, MainRepository repo)
+        {
+            var usersIDsForDeletion = scenarioContext.Get<List<int>>("idsToBeDeleted");
+
+            foreach (var id in usersIDsForDeletion)
+            {
+                repo.Repository.Delete(id);
+            }
         }
     }
 }
