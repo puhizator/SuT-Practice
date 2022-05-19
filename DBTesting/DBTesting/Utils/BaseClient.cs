@@ -88,5 +88,52 @@ namespace DBTesting.Utils
         {
             context.Entry(entity).Reload();
         }
+
+        // new methods
+
+
+        public TEntity GetByCompositePrimaryKey(Expression<Func<TEntity, bool>> conditionLambda)
+        {
+            var entity = context.Set<TEntity>().FirstOrDefault(conditionLambda);
+
+            if (entity == null)
+                throw new InvalidOperationException($"{typeof(TEntity).Name} with condition not found.");
+
+            return entity;
+        }
+
+        public virtual void Delete(Expression<Func<TEntity, bool>> conditionLambda)
+        {
+            var entityToDelete = GetByCompositePrimaryKey(conditionLambda);
+            context.Set<TEntity>().Remove(entityToDelete);
+            context.SaveChanges();
+        }
+
+        public void DeleteRange(IReadOnlyCollection<TEntity> entities)
+        {
+            context.Set<TEntity>().RemoveRange(entities);
+            context.SaveChanges();
+        }
+
+        public void Delete(Guid id)
+        {
+            var entityToDelete = Get(id);
+            context.Set<TEntity>().Remove(entityToDelete);
+            context.SaveChanges();
+        }
+
+        public void Delete(long id)
+        {
+            var entityToDelete = Get(id);
+            context.Set<TEntity>().Remove(entityToDelete);
+            context.SaveChanges();
+        }
+
+        public void AddRangeReadOnly(IReadOnlyCollection<TEntity> entities)
+        {
+            context.Set<TEntity>().AddRange(entities);
+            context.SaveChanges();
+        }
+
     }
 }
