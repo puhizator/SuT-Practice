@@ -5,6 +5,7 @@ using DBTesting.Utils;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using TechTalk.SpecFlow;
 
 namespace DBTesting.StepDefinitions
@@ -38,7 +39,6 @@ namespace DBTesting.StepDefinitions
         public void WhenIAddMultipleEntities()
         {
             var entitiesToBeAdded = new List<UserEntity>();
-            var idsToBeDeleted = new List<int>();
 
             int randomNumberTo10 = Helper.GetRandomIntFrom1To10();
 
@@ -50,12 +50,7 @@ namespace DBTesting.StepDefinitions
 
             _repo.Repository.AddRange(entitiesToBeAdded);
 
-            foreach (var e in entitiesToBeAdded)
-            {
-                idsToBeDeleted.Add(e.Id);
-            }
-
-            _scenarioContext.Add("idsToBeDeleted", idsToBeDeleted);
+            _scenarioContext.Add("usersToBeDeleted", entitiesToBeAdded);
         }
 
         [Then(@"I should be able to see that user in DB")]
@@ -85,13 +80,13 @@ namespace DBTesting.StepDefinitions
         [Then(@"I should be able to see all of the users in DB")]
         public void ThenIShouldBeAbleToSeeAllOfTheUsersInDB()
         {
-            var idsLastCreatedUsers = _scenarioContext.Get<List<int>>("idsToBeDeleted");
+            var users = _scenarioContext.Get<List<UserEntity>>("usersToBeDeleted");
 
-            foreach (var id in idsLastCreatedUsers)
-            {
-                var userFromDB = _repo.Repository.Get(id);
+            _repo.Repository.Reload(users.FirstOrDefault());
 
-                Assert.That(userFromDB, Is.Not.Null);
+            for (int i = 0; i < users.Count; i++)
+            {                
+                Assert.That(_repo.Repository.Contains(u => u.Email == users[i].Email), $"{users[i].Email} does not exist");
             }
         }
 

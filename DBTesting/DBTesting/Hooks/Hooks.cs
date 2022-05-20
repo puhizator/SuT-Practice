@@ -1,4 +1,5 @@
 ﻿using DBTesting.DataContext;
+using DBTesting.Models;
 using System.Collections.Generic;
 using TechTalk.SpecFlow;
 
@@ -27,12 +28,9 @@ namespace DBTesting.Hooks
 
         public static void DeleteUsers(ScenarioContext scenarioContext, MainRepository repo)
         {
-            var usersIDsForDeletion = scenarioContext.Get<List<int>>("idsToBeDeleted");
+            var usersForDeletion = scenarioContext.Get<List<UserEntity>>("usersToBeDeleted");
 
-            foreach (var id in usersIDsForDeletion)
-            {
-                repo.Repository.Delete(id);
-            }
+            repo.Repository.DeleteRange(usersForDeletion);
         }
     }
 }
