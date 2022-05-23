@@ -5,6 +5,7 @@ using DBTesting.Utils;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using TechTalk.SpecFlow;
 
@@ -48,9 +49,11 @@ namespace DBTesting.StepDefinitions
                 entitiesToBeAdded.Add(user);
             }
 
-            _repo.Repository.AddRange(entitiesToBeAdded);
+            IReadOnlyCollection<UserEntity> readOnlyEntitiesToBeAdded = entitiesToBeAdded;
 
-            _scenarioContext.Add("usersToBeDeleted", entitiesToBeAdded);
+            _repo.Repository.AddRangeReadOnly(readOnlyEntitiesToBeAdded);
+
+            _scenarioContext.Add("usersToBeDeleted", readOnlyEntitiesToBeAdded);
         }
 
         [Then(@"I should be able to see that user in DB")]
@@ -85,7 +88,7 @@ namespace DBTesting.StepDefinitions
             _repo.Repository.Reload(users.FirstOrDefault());
 
             for (int i = 0; i < users.Count; i++)
-            {                
+            {
                 Assert.That(_repo.Repository.Contains(u => u.Email == users[i].Email), $"{users[i].Email} does not exist");
             }
         }
