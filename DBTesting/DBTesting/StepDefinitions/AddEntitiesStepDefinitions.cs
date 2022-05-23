@@ -5,6 +5,8 @@ using DBTesting.Utils;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using TechTalk.SpecFlow;
 
 namespace DBTesting.StepDefinitions
@@ -27,16 +29,17 @@ namespace DBTesting.StepDefinitions
         [When(@"I add single Entity")]
         public void WhenIAddSingleEntity()
         {
-            _repo.Repository.Create(TestData.DefaultUser);
+            var userToAdd = TestData.GenerateNewUser();
+            _repo.Repository.Create(userToAdd);
 
-            _scenarioContext.Add("lastUserID", TestData.DefaultUser.Id);
+            _scenarioContext.Add("lastUserID", userToAdd.Id);
+            _scenarioContext.Add("lastUser", userToAdd);
         }
 
         [When(@"I add multiple entities")]
         public void WhenIAddMultipleEntities()
         {
             var entitiesToBeAdded = new List<UserEntity>();
-            var idsToBeDeleted = new List<int>();
 
             int randomNumberTo10 = Helper.GetRandomIntFrom1To10();
 
@@ -46,49 +49,47 @@ namespace DBTesting.StepDefinitions
                 entitiesToBeAdded.Add(user);
             }
 
-            _repo.Repository.AddRange(entitiesToBeAdded);
+            IReadOnlyCollection<UserEntity> readOnlyEntitiesToBeAdded = entitiesToBeAdded;
 
-            foreach (var e in entitiesToBeAdded)
-            {
-                idsToBeDeleted.Add(e.Id);
-            }
+            _repo.Repository.AddRangeReadOnly(readOnlyEntitiesToBeAdded);
 
-            _scenarioContext.Add("idsToBeDeleted", idsToBeDeleted);
+            _scenarioContext.Add("usersToBeDeleted", readOnlyEntitiesToBeAdded);
         }
 
         [Then(@"I should be able to see that user in DB")]
         public void ThenIShouldBeAbleToSeeThatUserInDB()
         {
             var userFromDBLastID = _scenarioContext.Get<int>("lastUserID");
+            var userSavedInScenario = _scenarioContext.Get<UserEntity>("lastUser");
             var userFromDB = _repo.Repository.Get(userFromDBLastID);
 
-            var defaultUserData = JsonConvert.DeserializeObject<UserEntity>(JsonConvert.SerializeObject(TestData.DefaultUser));
+            var initialUser = JsonConvert.DeserializeObject<UserEntity>(JsonConvert.SerializeObject(userSavedInScenario));
 
             _repo.Repository.Reload(userFromDB);
 
             Assert.Multiple(() =>
             {
-                Assert.That(userFromDB.Title, Is.EqualTo(defaultUserData.Title), "Title does not match");
-                Assert.That(userFromDB.FirstName, Is.EqualTo(defaultUserData.FirstName), "FirstName does not match");
-                Assert.That(userFromDB.SirName, Is.EqualTo(defaultUserData.SirName), "SirName does not match");
-                Assert.That(userFromDB.Country, Is.EqualTo(defaultUserData.Country), "Country does not match");
-                Assert.That(userFromDB.City, Is.EqualTo(defaultUserData.City), "City does not match");
-                Assert.That(userFromDB.Email, Is.EqualTo(defaultUserData.Email), "Email does not match");
-                Assert.That(userFromDB.Password, Is.EqualTo(defaultUserData.Password), "Password does not match");
-                Assert.That(userFromDB.IsAdmin, Is.EqualTo(defaultUserData.IsAdmin), "User admin rights are not correct");
+                Assert.That(userFromDB.Title, Is.EqualTo(initialUser.Title), "Title does not match");
+                Assert.That(userFromDB.FirstName, Is.EqualTo(initialUser.FirstName), "FirstName does not match");
+                Assert.That(userFromDB.SirName, Is.EqualTo(initialUser.SirName), "SirName does not match");
+                Assert.That(userFromDB.Country, Is.EqualTo(initialUser.Country), "Country does not match");
+                Assert.That(userFromDB.City, Is.EqualTo(initialUser.City), "City does not match");
+                Assert.That(userFromDB.Email, Is.EqualTo(initialUser.Email), "Email does not match");
+                Assert.That(userFromDB.Password, Is.EqualTo(initialUser.Password), "Password does not match");
+                Assert.That(userFromDB.IsAdmin, Is.EqualTo(initialUser.IsAdmin), "User admin rights are not correct");
             });
         }
 
         [Then(@"I should be able to see all of the users in DB")]
         public void ThenIShouldBeAbleToSeeAllOfTheUsersInDB()
         {
-            var idsLastCreatedUsers = _scenarioContext.Get<List<int>>("idsToBeDeleted");
+            var users = _scenarioContext.Get<List<UserEntity>>("usersToBeDeleted");
 
-            foreach (var id in idsLastCreatedUsers)
+            _repo.Repository.Reload(users.FirstOrDefault());
+
+            for (int i = 0; i < users.Count; i++)
             {
-                var userFromDB = _repo.Repository.Get(id);
-
-                Assert.That(userFromDB, Is.Not.Null);
+                Assert.That(_repo.Repository.Contains(u => u.Email == users[i].Email), $"{users[i].Email} does not exist");
             }
         }
 
