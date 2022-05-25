@@ -1,13 +1,14 @@
-using DBTesting.DataContext;
-using DBTesting.DBContext;
-using DBTesting.Models;
+using DBTesting.DB.DataContext;
+using DBTesting.DB.DBContext;
+using DBTesting.DB.Models;
+using DBTesting.Helping;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow;
 
-namespace DBTesting.StepDefinitions
+namespace DBTesting.DB.StepDefinitions
 {
     [Binding]
     public class AddEntitiesStepDefinitions
@@ -21,7 +22,7 @@ namespace DBTesting.StepDefinitions
         {
             _scenarioContext = scenarioContext;
             _featureContext = featureContext;
-            _repo = _featureContext.Get<MainRepository>(DBContext.Labels.MainRepository);
+            _repo = _featureContext.Get<MainRepository>(Labels.MainRepository);
         }
 
         [When(@"I add single Entity")]

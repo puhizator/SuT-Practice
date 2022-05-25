@@ -1,9 +1,9 @@
 ﻿using DBTesting.Configurations;
-using DBTesting.DBContext;
-using DBTesting.Models;
-using DBTesting.Utils;
+using DBTesting.DB.DBContext;
+using DBTesting.DB.Models;
+using DBTesting.DB.Utils;
 
-namespace DBTesting.DataContext
+namespace DBTesting.DB.DataContext
 {
     public class MainRepository
     {

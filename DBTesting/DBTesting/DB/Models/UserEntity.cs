@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DBTesting.Models
+namespace DBTesting.DB.Models
 {
     public class UserEntity
     {

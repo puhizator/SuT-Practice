@@ -1,6 +1,7 @@
-﻿using DBTesting.Models;
+﻿using DBTesting.DB.Models;
+using DBTesting.Helping;
 
-namespace DBTesting.DBContext
+namespace DBTesting.DB.DBContext
 {
     public static class TestData
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace DBTesting.Utils
+namespace DBTesting.DB.Utils
 {
     public class BaseClient<TContext, TEntity> where TContext : DbContext where TEntity : class, new()
     {

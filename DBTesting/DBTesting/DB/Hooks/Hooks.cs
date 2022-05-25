@@ -1,9 +1,10 @@
-﻿using DBTesting.DataContext;
-using DBTesting.Models;
+﻿using DBTesting.DB.DataContext;
+using DBTesting.DB.DBContext;
+using DBTesting.DB.Models;
 using System.Collections.Generic;
 using TechTalk.SpecFlow;
 
-namespace DBTesting.Hooks
+namespace DBTesting.DB.Hooks
 {
     [Binding]
     public sealed class Hooks
@@ -12,7 +13,7 @@ namespace DBTesting.Hooks
         [Scope(Tag = "DB")]
         public static void FeatureSetUp(FeatureContext featureContext)
         {
-            featureContext.Add(DBContext.Labels.MainRepository, new MainRepository());
+            featureContext.Add(Labels.MainRepository, new MainRepository());
         }
 
         [AfterScenario]
