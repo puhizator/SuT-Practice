@@ -82,13 +82,7 @@ namespace DBTesting.StepDefinitions
         public void ThenIShouldSeeUserWithID(int id)
         {
             var givenUser = _scenarioContext.Get<UserEntity>("userByID");
-            var initialUser = JsonConvert.DeserializeObject<UserEntity>(JsonConvert.SerializeObject(givenUser));
-
-            _repo.Repository.Reload(givenUser);
-
-            var dbUser = _repo.Repository.Get(id);
-
-            Assert.That(dbUser.Id, Is.EqualTo(initialUser.Id), "Returned ID is not correct");
+            Assert.That(givenUser.Id, Is.EqualTo(id), "Returned ID is not correct");
         }
 
         [Then(@"I should see first user")]
@@ -110,7 +104,7 @@ namespace DBTesting.StepDefinitions
             Assert.AreEqual(returnedUserEmail, inputEmail);
         }
 
-        [Then(@"I should see all users that contain this ""([^""]*)""")]
+        [Then(@"I should see all users that contain this ""([^""]*)"" in their emails")]
         public void ThenIShouldSeeAllUsersThatContainThis(string phrase)
         {
             var users = _scenarioContext.Get<List<UserEntity>>("usersContainPhrase");
