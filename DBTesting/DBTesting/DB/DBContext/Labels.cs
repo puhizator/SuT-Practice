@@ -1,4 +1,4 @@
-﻿namespace DBTesting.DBContext
+﻿namespace DBTesting.DB.DBContext
 {
     class Labels
     {

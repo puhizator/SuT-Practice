@@ -1,7 +1,7 @@
-﻿using DBTesting.Models;
+﻿using DBTesting.DB.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DBTesting.DataContext
+namespace DBTesting.DB.DataContext
 {
     public class SuTContext : DbContext
     {

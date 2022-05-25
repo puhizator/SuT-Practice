@@ -1,9 +1,9 @@
-using DBTesting.DataContext;
-using DBTesting.DBContext;
+using DBTesting.DB.DataContext;
+using DBTesting.DB.DBContext;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
 
-namespace DBTesting.StepDefinitions
+namespace DBTesting.DB.StepDefinitions
 {
     [Binding]
     public class UpdateUserStepDefinitions
@@ -17,7 +17,7 @@ namespace DBTesting.StepDefinitions
         {
             _scenarioContext = scenarioContext;
             _featureContext = featureContext;
-            _repo = _featureContext.Get<MainRepository>(DBContext.Labels.MainRepository);
+            _repo = _featureContext.Get<MainRepository>(Labels.MainRepository);
         }
 
         [Given(@"I have already created user")]

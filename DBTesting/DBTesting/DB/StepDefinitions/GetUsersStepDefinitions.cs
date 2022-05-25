@@ -1,13 +1,12 @@
-using DBTesting.DataContext;
-using DBTesting.Models;
-using Newtonsoft.Json;
+using DBTesting.DB.DataContext;
+using DBTesting.DB.DBContext;
+using DBTesting.DB.Models;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow;
 
-namespace DBTesting.StepDefinitions
+namespace DBTesting.DB.StepDefinitions
 {
     [Binding]
     public class GetUsersStepDefinitions
@@ -19,7 +18,7 @@ namespace DBTesting.StepDefinitions
         public GetUsersStepDefinitions(FeatureContext featureContext, ScenarioContext scenarioContext)
         {
             _featureContext = featureContext;
-            _repo = _featureContext.Get<MainRepository>(DBContext.Labels.MainRepository);
+            _repo = _featureContext.Get<MainRepository>(Labels.MainRepository);
             _scenarioContext = scenarioContext;
         }
 

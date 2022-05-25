@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
 
-namespace DBTesting.Utils
+namespace DBTesting.DB.Utils
 {
     public class BaseClient<TContext, TEntity> where TContext : DbContext where TEntity : class, new()
     {
