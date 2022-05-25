@@ -6,11 +6,11 @@ using System.Linq.Expressions;
 
 namespace DBTesting.DB.Utils
 {
-    public class BaseClient<TContext, TEntity> where TContext : DbContext where TEntity : class, new()
+    public class BaseDBClient<TContext, TEntity> where TContext : DbContext where TEntity : class, new()
     {
         private readonly DbContext context;
 
-        public BaseClient(string connectionString)
+        public BaseDBClient(string connectionString)
         {
             context = (TContext)Activator.CreateInstance(
                 typeof(TContext),
