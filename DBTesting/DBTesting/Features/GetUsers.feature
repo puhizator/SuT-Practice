@@ -29,7 +29,7 @@ Examples:
 
 Scenario: Get user by email containing phrase
 	When Get users by email containing "<phrase>"
-	Then I should see all users that contain this "<phrase>"
+	Then I should see all users that contain this "<phrase>" in their emails
 
 Examples:
 	| phrase     |
