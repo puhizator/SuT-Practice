@@ -11,7 +11,7 @@ namespace DBTesting.DataContext
 
         public MainRepository()
         {
-            var connection  = ConfigurationProvider.GetValue[Labels.DBConnectionString];
+            var connection = ConfigurationProvider.GetValue[Labels.DBConnectionString];
             Repository = new BaseClient<SuTContext, UserEntity>(connection);
         }
     }

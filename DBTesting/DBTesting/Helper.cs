@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DBTesting.Utils
+namespace DBTesting
 {
     internal static class Helper
     {
@@ -12,9 +8,9 @@ namespace DBTesting.Utils
         {
             Random random = new Random();
 
-                string email = string.Format("qa{0:00000000}@test.com", random.Next(10000000));
+            string email = string.Format("qa{0:00000000}@test.com", random.Next(10000000));
 
-                return email;
+            return email;
         }
 
         internal static int GetRandomIntFrom1To10()

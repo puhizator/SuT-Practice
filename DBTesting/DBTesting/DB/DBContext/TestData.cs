@@ -1,5 +1,4 @@
 ﻿using DBTesting.Models;
-using DBTesting.Utils;
 
 namespace DBTesting.DBContext
 {

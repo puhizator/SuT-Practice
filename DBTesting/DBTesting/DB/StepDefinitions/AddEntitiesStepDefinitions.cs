@@ -1,11 +1,9 @@
 using DBTesting.DataContext;
 using DBTesting.DBContext;
 using DBTesting.Models;
-using DBTesting.Utils;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using TechTalk.SpecFlow;
 
