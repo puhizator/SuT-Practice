@@ -1,8 +1,10 @@
 using DBTesting.DataContext;
 using DBTesting.Models;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TechTalk.SpecFlow;
 
 namespace DBTesting.StepDefinitions
@@ -22,9 +24,11 @@ namespace DBTesting.StepDefinitions
         }
 
         [When(@"Get all users")]
-        public void GivenGetAllUsers()
+        public void WhenGetAllUsers()
         {
             var dbSet = _repo.Repository.GetAll();
+            var count = dbSet.Count();
+            _scenarioContext.Add("collectionCount", count);
         }
 
         [When(@"Get single user by ID (.*)")]
@@ -39,19 +43,31 @@ namespace DBTesting.StepDefinitions
         [When(@"Get first user")]
         public void WhenGetFirstUser()
         {
-            var first = _repo.Repository.GetFirst();
+            var firstUser = _repo.Repository.GetFirst();
+            _scenarioContext.Add("firstUserID", firstUser.Id);
         }
 
-        [When(@"Get user by email ""([^""]*)""")]
+        [When(@"I Get user by email ""([^""]*)""")]
         public void WhenGetUserByEmail(string email)
         {
-            _repo.Repository.Get(e => e.Email == email);
+            var users = _repo.Repository.Get(e => e.Email == email);
+
+            var returnedUser = users.First();
+
+            _scenarioContext.Add("returnedUserEmail", returnedUser.Email);
+            _scenarioContext.Add("inputEmail", email);
         }
 
         [When(@"Get users by email containing ""([^""]*)""")]
         public void WhenGetUsersByEmailContaining(string phrase)
         {
-            var users = _repo.Repository.Get(entity => entity.Email.Contains(phrase));
+            var usersIEnum = _repo.Repository.Get(entity => entity.Email.Contains(phrase));
+            var users = new List<UserEntity>();
+
+            foreach (var u in usersIEnum)
+            {
+                users.Add(u);
+            }
 
             _scenarioContext.Add("usersContainPhrase", users);
         }
@@ -59,29 +75,39 @@ namespace DBTesting.StepDefinitions
         [Then(@"I should be able to see list of all users")]
         public void ThenIShouldBeAbleToSeeListOfAllUsers()
         {
-            throw new PendingStepException();
+            Assert.That(_scenarioContext.Get<int>("collectionCount") > 0);
         }
 
         [Then(@"I should see user with ID (.*)")]
         public void ThenIShouldSeeUserWithID(int id)
         {
             var givenUser = _scenarioContext.Get<UserEntity>("userByID");
+            var initialUser = JsonConvert.DeserializeObject<UserEntity>(JsonConvert.SerializeObject(givenUser));
+
+            _repo.Repository.Reload(givenUser);
 
             var dbUser = _repo.Repository.Get(id);
 
-            Assert.That(givenUser, Is.EqualTo(dbUser));
+            Assert.That(dbUser.Id, Is.EqualTo(initialUser.Id), "Returned ID is not correct");
         }
 
         [Then(@"I should see first user")]
         public void ThenIShouldSeeFirstUser()
         {
-            throw new PendingStepException();
+            var dbSet = _repo.Repository.GetAll();
+            var firstUser = dbSet.First();
+            var returnedFirstUserID = _scenarioContext.Get<int>("firstUserID");
+
+            Assert.That(returnedFirstUserID, Is.EqualTo(firstUser.Id));
         }
 
         [Then(@"I should see user with the same email")]
         public void ThenIShouldSeeUserWithTheSameEmail()
         {
-            throw new PendingStepException();
+            var returnedUserEmail = _scenarioContext.Get<string>("returnedUserEmail");
+            var inputEmail = _scenarioContext.Get<string>("inputEmail");
+
+            Assert.AreEqual(returnedUserEmail, inputEmail);
         }
 
         [Then(@"I should see all users that contain this ""([^""]*)""")]

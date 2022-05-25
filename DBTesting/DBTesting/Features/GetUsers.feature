@@ -13,14 +13,14 @@ Scenario: Get single user by ID
 
 Examples:
 	| id |
-	| 1  |
+	| 3  |
 
 Scenario: Get first user
 	When Get first user
 	Then I should see first user
 
 Scenario: Get user by particular email
-	When Get user by email "<email>"
+	When I Get user by email "<email>"
 	Then I should see user with the same email
 
 Examples:
