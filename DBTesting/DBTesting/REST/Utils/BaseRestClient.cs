@@ -1,11 +1,6 @@
 ﻿using DBTesting.Configurations;
 using DBTesting.REST.Models;
 using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DBTesting.REST.Utils
 {
@@ -44,7 +39,5 @@ namespace DBTesting.REST.Utils
 
             _response = _restClient.ExecuteAsync(_request).Result;
         }
-
-
     }
 }
