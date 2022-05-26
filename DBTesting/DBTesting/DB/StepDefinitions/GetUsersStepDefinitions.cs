@@ -46,29 +46,20 @@ namespace DBTesting.DB.StepDefinitions
             _scenarioContext.Add("firstUserID", firstUser.Id);
         }
 
-        [When(@"I Get user by email ""([^""]*)""")]
-        public void WhenGetUserByEmail(string email)
+        [When(@"I Get user by email (.*)")]
+        public void WhenIGetUserByEmail(string email)
         {
-            var users = _repo.Repository.Get(e => e.Email == email);
+            var user = _repo.Repository.Get(e => e.Email.Equals(email)).FirstOrDefault();
 
-            var returnedUser = users.First();
-
-            _scenarioContext.Add("returnedUserEmail", returnedUser.Email);
-            _scenarioContext.Add("inputEmail", email);
+            _scenarioContext.Add("returnedUserEmail", user.Email);
         }
 
         [When(@"Get users by email containing ""([^""]*)""")]
         public void WhenGetUsersByEmailContaining(string phrase)
         {
             var usersIEnum = _repo.Repository.Get(entity => entity.Email.Contains(phrase));
-            var users = new List<UserEntity>();
 
-            foreach (var u in usersIEnum)
-            {
-                users.Add(u);
-            }
-
-            _scenarioContext.Add("usersContainPhrase", users);
+            _scenarioContext.Add("usersContainPhrase", usersIEnum);
         }
 
         [Then(@"I should be able to see list of all users")]
@@ -91,22 +82,22 @@ namespace DBTesting.DB.StepDefinitions
             var firstUser = dbSet.First();
             var returnedFirstUserID = _scenarioContext.Get<int>("firstUserID");
 
-            Assert.That(returnedFirstUserID, Is.EqualTo(firstUser.Id));
+            //TODO: think about error msg
+            Assert.That(returnedFirstUserID, Is.EqualTo(firstUser.Id), "error");
         }
 
-        [Then(@"I should see user with the same email")]
-        public void ThenIShouldSeeUserWithTheSameEmail()
+        [Then(@"I should see user with the same (.*)")]
+        public void ThenIShouldSeeUserWithTheSameEmail(string email)
         {
             var returnedUserEmail = _scenarioContext.Get<string>("returnedUserEmail");
-            var inputEmail = _scenarioContext.Get<string>("inputEmail");
 
-            Assert.AreEqual(returnedUserEmail, inputEmail);
+            Assert.AreEqual(returnedUserEmail, email);
         }
 
         [Then(@"I should see all users that contain this ""([^""]*)"" in their emails")]
         public void ThenIShouldSeeAllUsersThatContainThis(string phrase)
         {
-            var users = _scenarioContext.Get<List<UserEntity>>("usersContainPhrase");
+            var users = _scenarioContext.Get<IEnumerable<UserEntity>>("usersContainPhrase");
 
             foreach (var user in users)
             {

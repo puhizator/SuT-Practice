@@ -1,7 +1,7 @@
 using DBTesting.DB.DataContext;
 using DBTesting.DB.DBContext;
 using DBTesting.DB.Models;
-using DBTesting.Helping;
+using DBTesting.Helpers;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -50,7 +50,7 @@ namespace DBTesting.DB.StepDefinitions
 
             IReadOnlyCollection<UserEntity> readOnlyEntitiesToBeAdded = entitiesToBeAdded;
 
-            _repo.Repository.AddRangeReadOnly(readOnlyEntitiesToBeAdded);
+            _repo.Repository.AddRangeReadOnly(entitiesToBeAdded);
 
             _scenarioContext.Add("usersToBeDeleted", readOnlyEntitiesToBeAdded);
         }
