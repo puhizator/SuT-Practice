@@ -30,6 +30,7 @@ namespace DBTesting.DB.StepDefinitions
             _scenarioContext.Add("lastUserID", userToBeAdded.Id);
         }
 
+
         [When(@"I update his first name to ""([^""]*)""")]
         public void WhenIUpdateHisFirstNameTo(string firstName)
         {

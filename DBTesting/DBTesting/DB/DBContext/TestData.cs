@@ -1,5 +1,5 @@
 ﻿using DBTesting.DB.Models;
-using DBTesting.Helping;
+using DBTesting.Helpers;
 
 namespace DBTesting.DB.DBContext
 {
