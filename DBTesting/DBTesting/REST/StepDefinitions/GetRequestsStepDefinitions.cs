@@ -2,6 +2,8 @@ using DBTesting.REST.Models;
 using DBTesting.REST.Utils;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using RestSharp;
+using System.Collections.Generic;
 using TechTalk.SpecFlow;
 
 namespace DBTesting.REST.StepDefinitions
@@ -21,19 +23,17 @@ namespace DBTesting.REST.StepDefinitions
         [When(@"I perform get request to all users")]
         public void WhenIPerformGetRequestToAllUsers()
         {
-            _baseRestClient.GetAllUsers();
+            var users = _baseRestClient.GetAllUsers();
+
+            List<User> trueUsers = users.Data;
         }
 
         [When(@"I perform get request to user with id (.*)")]
         public void WhenIPerformGetRequestToUserId(int id)
         {
-            _baseRestClient.GetSingleUser(id);
+            var response = _baseRestClient.GetSingleUser(id);
 
-            var user = _baseRestClient.ResponseContent;
-
-            var deseralizedUser = JsonConvert.DeserializeObject<User>(user);
-
-            _scenarioContext.Add("userEmail", deseralizedUser.Email);
+            _scenarioContext.Add("response", response);
 
         }
 
@@ -42,8 +42,10 @@ namespace DBTesting.REST.StepDefinitions
         {
             Assert.Multiple(() =>
             {
-                Assert.That(code, Is.EqualTo(_baseRestClient.ResponseCode));
-                Assert.That(msg, Is.EqualTo(_baseRestClient.ResponseMessage));
+                var responseFromGetRequest = _scenarioContext.Get<RestResponse<User>>("response");
+
+                Assert.That(code, Is.EqualTo(responseFromGetRequest.StatusCode));
+                Assert.That(msg, Is.EqualTo(responseFromGetRequest.StatusDescription));
             });
         }
 

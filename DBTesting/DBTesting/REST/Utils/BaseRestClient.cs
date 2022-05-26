@@ -1,6 +1,7 @@
 ﻿using DBTesting.Configurations;
 using DBTesting.REST.Models;
 using RestSharp;
+using System.Collections.Generic;
 
 namespace DBTesting.REST.Utils
 {
@@ -8,36 +9,30 @@ namespace DBTesting.REST.Utils
     {
         RestClient _restClient;
         RestRequest _request;
-        RestResponse _response;
 
         public BaseRestClient()
         {
             _restClient = new RestClient(ConfigurationProvider.GetValue[ConfigurationLabels.RestBaseUrl]);
         }
-
-        public int ResponseCode { get => ((int)_response.StatusCode); }
-        public string ResponseMessage { get => (_response.StatusDescription); }
-        public string ResponseContent { get => (_response.Content); }
-
-        public void GetAllUsers()
+        public RestResponse<List<User>> GetAllUsers()
         {
             _request = new RestRequest(ConfigurationProvider.GetValue[ConfigurationLabels.UsersEndPoint], Method.Get);
 
-            _response = _restClient.ExecuteAsync(_request).Result;
+            return _restClient.ExecuteAsync<List<User>>(_request).Result;
         }
-        public void GetSingleUser(int id)
+        public RestResponse<User> GetSingleUser(int id)
         {
             _request = new RestRequest($"{ConfigurationProvider.GetValue[ConfigurationLabels.UsersEndPoint]}/{id}", Method.Get);
 
-            _response = _restClient.ExecuteAsync(_request).Result;
+            return _restClient.ExecuteAsync<User>(_request).Result;
         }
 
-        public void PostSingleUser(User user)
+        public RestResponse<User> PostSingleUser(User user)
         {
             _request = new RestRequest(ConfigurationProvider.GetValue[ConfigurationLabels.UsersEndPoint], Method.Post)
                 .AddJsonBody(user);
 
-            _response = _restClient.ExecuteAsync(_request).Result;
+            return _restClient.ExecuteAsync<User>(_request).Result;
         }
     }
 }

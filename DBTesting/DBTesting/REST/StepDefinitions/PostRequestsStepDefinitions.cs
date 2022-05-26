@@ -21,15 +21,16 @@ namespace DBTesting.REST.StepDefinitions
         [When(@"I execute POST request with default user")]
         public void WhenIExecutePOSTRequestWithDefaultUser()
         {
-            _baseRestClient.PostSingleUser(TestData.DefaultUser());
+            var user = _baseRestClient.PostSingleUser(TestData.DefaultUser());
+            var name = user.Data.FirstName;
+            var code = user.StatusCode;
 
-            var user = JsonConvert.DeserializeObject<User>(_baseRestClient.ResponseContent);
         }
 
         [Then(@"I should see succesfully created user")]
         public void ThenIShouldSeeSuccesfullyCreatedUser()
         {
-            throw new PendingStepException();
+            //throw new PendingStepException();
         }
     }
 }
