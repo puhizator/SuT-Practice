@@ -2,6 +2,8 @@ using DBTesting.REST.Models;
 using DBTesting.REST.Utils;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using RestSharp;
+using System.Collections.Generic;
 using TechTalk.SpecFlow;
 
 namespace DBTesting.REST.StepDefinitions
@@ -21,39 +23,37 @@ namespace DBTesting.REST.StepDefinitions
         [When(@"I perform get request to all users")]
         public void WhenIPerformGetRequestToAllUsers()
         {
-            _baseRestClient.GetAllUsers();
+            var response = _baseRestClient.GetAllUsers();
+
+            _scenarioContext.Add("response", response);
         }
 
         [When(@"I perform get request to user with id (.*)")]
         public void WhenIPerformGetRequestToUserId(int id)
         {
-            _baseRestClient.GetSingleUser(id);
+            var response = _baseRestClient.GetSingleUser(id);
 
-            var user = _baseRestClient.ResponseContent;
-
-            var deseralizedUser = JsonConvert.DeserializeObject<User>(user);
-
-            _scenarioContext.Add("userEmail", deseralizedUser.Email);
-
+            _scenarioContext.Add("response", response);
+            _scenarioContext.Add("userEmail", response.Data.Email);
         }
 
-        [Then(@"I should receive response code (.*) with message ""([^""]*)""")]
+        [Then(@"I should receive response code (.*) with message '(.*)'")]
         public void ThenIShouldReceiveResponseCodeWithMessage(int code, string msg)
         {
+            var responseFromGetRequest = _scenarioContext.Get<RestResponse>("response");
+
             Assert.Multiple(() =>
             {
-                Assert.That(code, Is.EqualTo(_baseRestClient.ResponseCode));
-                Assert.That(msg, Is.EqualTo(_baseRestClient.ResponseMessage));
+                Assert.That(code, Is.EqualTo((int)responseFromGetRequest.StatusCode));
+                Assert.That(msg, Is.EqualTo(responseFromGetRequest.StatusDescription));
             });
         }
 
-
-        [Then(@"I should see user email ""([^""]*)""")]
+        [Then(@"I should see user email '(.*)'")]
         public void ThenIShouldSeeUserEmail(string email)
         {
-            Assert.AreEqual(email, _scenarioContext.Get<string>("userEmail"), "Email does not match");
+            var emailFromResponse = _scenarioContext.Get<string>("userEmail");
+            Assert.AreEqual(email, emailFromResponse, "Email from the response does not match input email");
         }
-
-
     }
 }

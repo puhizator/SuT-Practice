@@ -28,7 +28,7 @@ namespace DBTesting.DB.StepDefinitions
         [When(@"I add single Entity")]
         public void WhenIAddSingleEntity()
         {
-            var userToAdd = TestData.GenerateNewUser();
+            var userToAdd = TestData.GetNewUser();
             _repo.Repository.Create(userToAdd);
 
             _scenarioContext.Add("lastUserID", userToAdd.Id);
@@ -44,7 +44,7 @@ namespace DBTesting.DB.StepDefinitions
 
             for (int i = 0; i < randomNumberTo10; i++)
             {
-                var user = TestData.GenerateNewUser();
+                var user = TestData.GetNewUser();
                 entitiesToBeAdded.Add(user);
             }
 

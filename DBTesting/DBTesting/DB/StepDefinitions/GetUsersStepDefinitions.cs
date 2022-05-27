@@ -46,7 +46,7 @@ namespace DBTesting.DB.StepDefinitions
             _scenarioContext.Add("firstUserID", firstUser.Id);
         }
 
-        [When(@"I Get user by email (.*)")]
+        [When(@"I Get user by email '(.*)'")]
         public void WhenIGetUserByEmail(string email)
         {
             var user = _repo.Repository.Get(e => e.Email.Equals(email)).FirstOrDefault();
@@ -54,7 +54,7 @@ namespace DBTesting.DB.StepDefinitions
             _scenarioContext.Add("returnedUserEmail", user.Email);
         }
 
-        [When(@"Get users by email containing ""([^""]*)""")]
+        [When(@"Get users by email containing '(.*)'")]
         public void WhenGetUsersByEmailContaining(string phrase)
         {
             var usersIEnum = _repo.Repository.Get(entity => entity.Email.Contains(phrase));
@@ -65,7 +65,8 @@ namespace DBTesting.DB.StepDefinitions
         [Then(@"I should be able to see list of all users")]
         public void ThenIShouldBeAbleToSeeListOfAllUsers()
         {
-            Assert.That(_scenarioContext.Get<int>("collectionCount") > 0);
+            var collectionMembers = _scenarioContext.Get<int>("collectionCount");
+            Assert.That(collectionMembers > 0);
         }
 
         [Then(@"I should see user with ID (.*)")]
@@ -86,7 +87,7 @@ namespace DBTesting.DB.StepDefinitions
             Assert.That(returnedFirstUserID, Is.EqualTo(firstUser.Id), "error");
         }
 
-        [Then(@"I should see user with the same (.*)")]
+        [Then(@"I should see user with the same '(.*)'")]
         public void ThenIShouldSeeUserWithTheSameEmail(string email)
         {
             var returnedUserEmail = _scenarioContext.Get<string>("returnedUserEmail");
@@ -94,7 +95,7 @@ namespace DBTesting.DB.StepDefinitions
             Assert.AreEqual(returnedUserEmail, email);
         }
 
-        [Then(@"I should see all users that contain this ""([^""]*)"" in their emails")]
+        [Then(@"I should see all users that contain this '(.*)' in their emails")]
         public void ThenIShouldSeeAllUsersThatContainThis(string phrase)
         {
             var users = _scenarioContext.Get<IEnumerable<UserEntity>>("usersContainPhrase");

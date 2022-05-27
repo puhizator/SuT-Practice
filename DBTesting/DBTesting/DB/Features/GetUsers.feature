@@ -21,16 +21,16 @@ Scenario: Get first user
 
 
 Scenario: Get user by particular email
-	When I Get user by email <email>
-	Then I should see user with the same <email>
+	When I Get user by email '<email>'
+	Then I should see user with the same '<email>'
 Examples:
 	| email                |
 	| admin@automation.com |
 
 
 Scenario: Get user by email containing phrase
-	When Get users by email containing "<phrase>"
-	Then I should see all users that contain this "<phrase>" in their emails
+	When Get users by email containing '<phrase>'
+	Then I should see all users that contain this '<phrase>' in their emails
 Examples:
 	| phrase     |
 	| automation |
