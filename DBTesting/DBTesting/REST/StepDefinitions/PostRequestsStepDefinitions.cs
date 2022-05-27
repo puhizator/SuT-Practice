@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 
 namespace DBTesting.REST.StepDefinitions
 {
@@ -23,6 +24,16 @@ namespace DBTesting.REST.StepDefinitions
         public void WhenIExecutePOSTRequestWithDefaultUser()
         {
             var response = _baseRestClient.PostSingleUser(TestData.GetNewUser());
+
+            _scenarioContext.Add("lastCreatedUser", response.Data);
+            _scenarioContext.Add("lastCreatedUserID", response.Data.Id);
+        }
+
+        [When(@"I execute POST request with new user")]
+        public void WhenIExecutePOSTRequestWithNewUser(Table table)
+        {
+            User user = table.CreateInstance<User>();
+            var response = _baseRestClient.PostSingleUser(user);
 
             _scenarioContext.Add("lastCreatedUser", response.Data);
             _scenarioContext.Add("lastCreatedUserID", response.Data.Id);

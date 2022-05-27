@@ -36,6 +36,14 @@ namespace DBTesting.REST.Utils
             return _restClient.ExecuteAsync<User>(_request).Result;
         }
 
+        public RestResponse<User> PutSingleUser(int id, User user)
+        {
+            _request = new RestRequest($"{ConfigurationProvider.GetValue[ConfigurationLabels.UsersEndPoint]}/{id}", Method.Put)
+                .AddJsonBody(user);
+
+            return _restClient.ExecuteAsync<User>(_request).Result;
+        }
+
         public RestResponse<User> DeleteSingleUser(int id)
         {
             _request = new RestRequest($"{ConfigurationProvider.GetValue[ConfigurationLabels.UsersEndPoint]}/{id}", Method.Delete);
