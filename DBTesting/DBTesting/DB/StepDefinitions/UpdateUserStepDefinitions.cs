@@ -23,7 +23,7 @@ namespace DBTesting.DB.StepDefinitions
         [Given(@"I have already created user")]
         public void GivenIHaveAlreadyCreatedUser()
         {
-            var userToBeAdded = TestData.GenerateNewUser();
+            var userToBeAdded = TestData.GetNewUser();
 
             _repo.Repository.Create(userToBeAdded);
 
@@ -31,7 +31,7 @@ namespace DBTesting.DB.StepDefinitions
         }
 
 
-        [When(@"I update his first name to ""([^""]*)""")]
+        [When(@"I update his first name to '(.*)'")]
         public void WhenIUpdateHisFirstNameTo(string firstName)
         {
             var userFromDBLastID = _scenarioContext.Get<int>("lastUserID");

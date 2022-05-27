@@ -1,6 +1,7 @@
 using DBTesting.REST.Models;
 using DBTesting.REST.Utils;
 using Newtonsoft.Json;
+using NUnit.Framework;
 using System;
 using TechTalk.SpecFlow;
 
@@ -18,19 +19,31 @@ namespace DBTesting.REST.StepDefinitions
             _baseRestClient = new BaseRestClient();
         }
 
-        [When(@"I execute POST request with default user")]
+        [When(@"I execute POST request with new test user")]
         public void WhenIExecutePOSTRequestWithDefaultUser()
         {
-            var user = _baseRestClient.PostSingleUser(TestData.DefaultUser());
-            var name = user.Data.FirstName;
-            var code = user.StatusCode;
+            var response = _baseRestClient.PostSingleUser(TestData.GetNewUser());
 
+            _scenarioContext.Add("lastCreatedUser", response.Data);
+            _scenarioContext.Add("lastCreatedUserID", response.Data.Id);
         }
 
         [Then(@"I should see succesfully created user")]
         public void ThenIShouldSeeSuccesfullyCreatedUser()
         {
-            //throw new PendingStepException();
+            var lastCreatedUser = _scenarioContext.Get<User>("lastCreatedUser");
+            var returnedUser = _baseRestClient.GetSingleUser(lastCreatedUser.Id).Data;
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(lastCreatedUser.FirstName, returnedUser.FirstName, "First name of input user != first name of get user");
+                Assert.AreEqual(lastCreatedUser.SirName, returnedUser.SirName, "Sir name of input user != sir name of get one");
+                Assert.AreEqual(lastCreatedUser.Country, returnedUser.Country, "Country of input user != country of get one");
+                Assert.AreEqual(lastCreatedUser.City, returnedUser.City, "City of input user != city of get one");
+                Assert.AreEqual(lastCreatedUser.Title, returnedUser.Title, "Title of input user != title of get one");
+                Assert.AreEqual(lastCreatedUser.Email, returnedUser.Email, "Email of input user != email of get one");
+                Assert.AreEqual(lastCreatedUser.IsAdmin, returnedUser.IsAdmin, "Wrong admin rights assigned");
+            });
         }
     }
 }

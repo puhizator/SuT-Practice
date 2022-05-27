@@ -7,7 +7,7 @@ using TechTalk.SpecFlow;
 namespace DBTesting.DB.Hooks
 {
     [Binding]
-    public sealed class Hooks
+    public sealed class DBHooks
     {
         [BeforeFeature]
         [Scope(Tag = "DB")]

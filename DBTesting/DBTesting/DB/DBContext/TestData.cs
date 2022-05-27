@@ -5,7 +5,7 @@ namespace DBTesting.DB.DBContext
 {
     public static class TestData
     {
-        public static UserEntity GenerateNewUser()
+        public static UserEntity GetNewUser()
         {
             var user = new UserEntity()
             {

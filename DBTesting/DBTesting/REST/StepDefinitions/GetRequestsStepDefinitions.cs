@@ -23,9 +23,9 @@ namespace DBTesting.REST.StepDefinitions
         [When(@"I perform get request to all users")]
         public void WhenIPerformGetRequestToAllUsers()
         {
-            var users = _baseRestClient.GetAllUsers();
+            var response = _baseRestClient.GetAllUsers();
 
-            List<User> trueUsers = users.Data;
+            _scenarioContext.Add("response", response);
         }
 
         [When(@"I perform get request to user with id (.*)")]
@@ -34,28 +34,26 @@ namespace DBTesting.REST.StepDefinitions
             var response = _baseRestClient.GetSingleUser(id);
 
             _scenarioContext.Add("response", response);
-
+            _scenarioContext.Add("userEmail", response.Data.Email);
         }
 
-        [Then(@"I should receive response code (.*) with message ""([^""]*)""")]
+        [Then(@"I should receive response code (.*) with message '(.*)'")]
         public void ThenIShouldReceiveResponseCodeWithMessage(int code, string msg)
         {
+            var responseFromGetRequest = _scenarioContext.Get<RestResponse>("response");
+
             Assert.Multiple(() =>
             {
-                var responseFromGetRequest = _scenarioContext.Get<RestResponse<User>>("response");
-
-                Assert.That(code, Is.EqualTo(responseFromGetRequest.StatusCode));
+                Assert.That(code, Is.EqualTo((int)responseFromGetRequest.StatusCode));
                 Assert.That(msg, Is.EqualTo(responseFromGetRequest.StatusDescription));
             });
         }
 
-
-        [Then(@"I should see user email ""([^""]*)""")]
+        [Then(@"I should see user email '(.*)'")]
         public void ThenIShouldSeeUserEmail(string email)
         {
-            Assert.AreEqual(email, _scenarioContext.Get<string>("userEmail"), "Email does not match");
+            var emailFromResponse = _scenarioContext.Get<string>("userEmail");
+            Assert.AreEqual(email, emailFromResponse, "Email from the response does not match input email");
         }
-
-
     }
 }
