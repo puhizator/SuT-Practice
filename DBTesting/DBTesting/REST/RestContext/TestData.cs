@@ -1,6 +1,7 @@
 ﻿using DBTesting.Helpers;
+using DBTesting.REST.Models;
 
-namespace DBTesting.REST.Models
+namespace DBTesting.REST.RestContext
 {
     internal class TestData
     {
