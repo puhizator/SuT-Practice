@@ -17,7 +17,7 @@ namespace DBTesting.DB.StepDefinitions
         {
             _scenarioContext = scenarioContext;
             _featureContext = featureContext;
-            _repo = _featureContext.Get<MainRepository>(Labels.MainRepository);
+            _repo = _featureContext.Get<MainRepository>(DBLabels.MainRepository);
         }
 
         [Given(@"I have already created user")]
@@ -27,18 +27,18 @@ namespace DBTesting.DB.StepDefinitions
 
             _repo.Repository.Create(userToBeAdded);
 
-            _scenarioContext.Add("lastUserID", userToBeAdded.Id);
+            _scenarioContext.Add(DBLabels.lastUserID, userToBeAdded.Id);
         }
 
 
         [When(@"I update his first name to '(.*)'")]
         public void WhenIUpdateHisFirstNameTo(string firstName)
         {
-            var userFromDBLastID = _scenarioContext.Get<int>("lastUserID");
+            var userFromDBLastID = _scenarioContext.Get<int>(DBLabels.lastUserID);
             var userFromDB = _repo.Repository.Get(userFromDBLastID);
 
             userFromDB.FirstName = firstName;
-            _scenarioContext.Add("changedFirstName", firstName);
+            _scenarioContext.Add(DBLabels.changedFirstName, firstName);
 
             _repo.Repository.Update(userFromDB);
         }
@@ -46,9 +46,9 @@ namespace DBTesting.DB.StepDefinitions
         [Then(@"I should see his first name changed")]
         public void ThenIShouldSeeHisFirstNameChangedTo()
         {
-            var userFromDBLastID = _scenarioContext.Get<int>("lastUserID");
+            var userFromDBLastID = _scenarioContext.Get<int>(DBLabels.lastUserID);
             var userForReload = _repo.Repository.Get(userFromDBLastID);
-            var changedFirstName = _scenarioContext.Get<string>("changedFirstName");
+            var changedFirstName = _scenarioContext.Get<string>(DBLabels.changedFirstName);
 
             _repo.Repository.Reload(userForReload);
             var userFromDB = _repo.Repository.Get(userFromDBLastID);

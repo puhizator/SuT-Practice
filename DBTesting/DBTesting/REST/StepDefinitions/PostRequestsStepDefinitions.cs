@@ -1,9 +1,11 @@
 using DBTesting.REST.Models;
+using DBTesting.REST.RestContext;
 using DBTesting.REST.Utils;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 
 namespace DBTesting.REST.StepDefinitions
 {
@@ -24,14 +26,24 @@ namespace DBTesting.REST.StepDefinitions
         {
             var response = _baseRestClient.PostSingleUser(TestData.GetNewUser());
 
-            _scenarioContext.Add("lastCreatedUser", response.Data);
-            _scenarioContext.Add("lastCreatedUserID", response.Data.Id);
+            _scenarioContext.Add(RestLabels.lastCreatedUser, response.Data);
+            _scenarioContext.Add(RestLabels.lastCreatedUserID, response.Data.Id);
+        }
+
+        [When(@"I execute POST request with the following user")]
+        public void WhenIExecutePOSTRequestWithTheFollowingUser(Table table)
+        {
+            var user = table.CreateInstance<User>();
+            var response = _baseRestClient.PostSingleUser(user);
+
+            _scenarioContext.Add(RestLabels.lastCreatedUser, response.Data);
+            _scenarioContext.Add(RestLabels.lastCreatedUserID, response.Data.Id);
         }
 
         [Then(@"I should see succesfully created user")]
         public void ThenIShouldSeeSuccesfullyCreatedUser()
         {
-            var lastCreatedUser = _scenarioContext.Get<User>("lastCreatedUser");
+            var lastCreatedUser = _scenarioContext.Get<User>(RestLabels.lastCreatedUser);
             var returnedUser = _baseRestClient.GetSingleUser(lastCreatedUser.Id).Data;
 
             Assert.Multiple(() =>

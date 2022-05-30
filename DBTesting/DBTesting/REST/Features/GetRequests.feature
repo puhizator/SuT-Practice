@@ -1,6 +1,5 @@
 ﻿Feature: GetRequests
 
-A short summary of the feature
 
 @rest
 Scenario: Get all users

@@ -22,7 +22,7 @@ namespace DBTesting.DB.StepDefinitions
         {
             _scenarioContext = scenarioContext;
             _featureContext = featureContext;
-            _repo = _featureContext.Get<MainRepository>(Labels.MainRepository);
+            _repo = _featureContext.Get<MainRepository>(DBLabels.MainRepository);
         }
 
         [When(@"I add single Entity")]
@@ -31,8 +31,8 @@ namespace DBTesting.DB.StepDefinitions
             var userToAdd = TestData.GetNewUser();
             _repo.Repository.Create(userToAdd);
 
-            _scenarioContext.Add("lastUserID", userToAdd.Id);
-            _scenarioContext.Add("lastUser", userToAdd);
+            _scenarioContext.Add(DBLabels.lastUserID, userToAdd.Id);
+            _scenarioContext.Add(DBLabels.lastUser, userToAdd);
         }
 
         [When(@"I add multiple entities")]
@@ -52,14 +52,14 @@ namespace DBTesting.DB.StepDefinitions
 
             _repo.Repository.AddRangeReadOnly(entitiesToBeAdded);
 
-            _scenarioContext.Add("usersToBeDeleted", readOnlyEntitiesToBeAdded);
+            _scenarioContext.Add(DBLabels.usersToBeDeleted, readOnlyEntitiesToBeAdded);
         }
 
         [Then(@"I should be able to see that user in DB")]
         public void ThenIShouldBeAbleToSeeThatUserInDB()
         {
-            var userFromDBLastID = _scenarioContext.Get<int>("lastUserID");
-            var userSavedInScenario = _scenarioContext.Get<UserEntity>("lastUser");
+            var userFromDBLastID = _scenarioContext.Get<int>(DBLabels.lastUserID);
+            var userSavedInScenario = _scenarioContext.Get<UserEntity>(DBLabels.lastUser);
             var userFromDB = _repo.Repository.Get(userFromDBLastID);
 
             var initialUser = JsonConvert.DeserializeObject<UserEntity>(JsonConvert.SerializeObject(userSavedInScenario));
@@ -82,7 +82,7 @@ namespace DBTesting.DB.StepDefinitions
         [Then(@"I should be able to see all of the users in DB")]
         public void ThenIShouldBeAbleToSeeAllOfTheUsersInDB()
         {
-            var users = _scenarioContext.Get<List<UserEntity>>("usersToBeDeleted");
+            var users = _scenarioContext.Get<List<UserEntity>>(DBLabels.usersToBeDeleted);
 
             _repo.Repository.Reload(users.FirstOrDefault());
 

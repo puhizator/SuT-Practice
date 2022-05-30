@@ -1,4 +1,5 @@
-﻿using DBTesting.REST.Utils;
+﻿using DBTesting.REST.RestContext;
+using DBTesting.REST.Utils;
 using TechTalk.SpecFlow;
 
 namespace DBTesting.REST.RestHooks
@@ -12,7 +13,7 @@ namespace DBTesting.REST.RestHooks
 
         public static void DeleteUser(ScenarioContext scenarioContext, BaseRestClient baseRestClient)
         {
-            var idToDelete = scenarioContext.Get<int>("lastCreatedUserID");
+            var idToDelete = scenarioContext.Get<int>(RestLabels.lastCreatedUserID);
 
             baseRestClient.DeleteSingleUser(idToDelete);
         }
