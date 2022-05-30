@@ -33,7 +33,7 @@ namespace DBTesting.REST.StepDefinitions
         [When(@"I execute POST request with the following user")]
         public void WhenIExecutePOSTRequestWithTheFollowingUser(Table table)
         {
-            User user = table.CreateInstance<User>();
+            var user = table.CreateInstance<User>();
             var response = _baseRestClient.PostSingleUser(user);
 
             _scenarioContext.Add(RestLabels.lastCreatedUser, response.Data);

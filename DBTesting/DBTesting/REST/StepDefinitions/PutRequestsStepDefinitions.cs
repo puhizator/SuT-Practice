@@ -23,7 +23,7 @@ namespace DBTesting.REST.StepDefinitions
         [Given(@"I have existing user")]
         public void GivenIHaveExistingUser(Table table)
         {
-            User user = table.CreateInstance<User>();
+            var user = table.CreateInstance<User>();
             var response = _baseRestClient.PostSingleUser(user);
 
             _scenarioContext.Add(RestLabels.lastCreatedUser, response.Data);
