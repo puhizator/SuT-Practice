@@ -1,4 +1,5 @@
 using DBTesting.REST.Models;
+using DBTesting.REST.RestContext;
 using DBTesting.REST.Utils;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -25,7 +26,7 @@ namespace DBTesting.REST.StepDefinitions
         {
             var response = _baseRestClient.GetAllUsers();
 
-            _scenarioContext.Add("response", response);
+            _scenarioContext.Add(RestLabels.Response, response);
         }
 
         [When(@"I perform get request to user with id (.*)")]
@@ -33,14 +34,14 @@ namespace DBTesting.REST.StepDefinitions
         {
             var response = _baseRestClient.GetSingleUser(id);
 
-            _scenarioContext.Add("response", response);
-            _scenarioContext.Add("userEmail", response.Data.Email);
+            _scenarioContext.Add(RestLabels.Response, response);
+            _scenarioContext.Add(RestLabels.userEmail, response.Data.Email);
         }
 
         [Then(@"I should receive response code (.*) with message '(.*)'")]
         public void ThenIShouldReceiveResponseCodeWithMessage(int code, string msg)
         {
-            var responseFromGetRequest = _scenarioContext.Get<RestResponse>("response");
+            var responseFromGetRequest = _scenarioContext.Get<RestResponse>(RestLabels.Response);
 
             Assert.Multiple(() =>
             {
@@ -52,7 +53,7 @@ namespace DBTesting.REST.StepDefinitions
         [Then(@"I should see user email '(.*)'")]
         public void ThenIShouldSeeUserEmail(string email)
         {
-            var emailFromResponse = _scenarioContext.Get<string>("userEmail");
+            var emailFromResponse = _scenarioContext.Get<string>(RestLabels.userEmail);
             Assert.AreEqual(email, emailFromResponse, "Email from the response does not match input email");
         }
     }

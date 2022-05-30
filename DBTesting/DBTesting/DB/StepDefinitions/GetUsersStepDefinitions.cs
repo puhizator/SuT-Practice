@@ -18,7 +18,7 @@ namespace DBTesting.DB.StepDefinitions
         public GetUsersStepDefinitions(FeatureContext featureContext, ScenarioContext scenarioContext)
         {
             _featureContext = featureContext;
-            _repo = _featureContext.Get<MainRepository>(Labels.MainRepository);
+            _repo = _featureContext.Get<MainRepository>(DBLabels.MainRepository);
             _scenarioContext = scenarioContext;
         }
 
@@ -27,7 +27,7 @@ namespace DBTesting.DB.StepDefinitions
         {
             var dbSet = _repo.Repository.GetAll();
             var count = dbSet.Count();
-            _scenarioContext.Add("collectionCount", count);
+            _scenarioContext.Add(DBLabels.collectionCount, count);
         }
 
         [When(@"Get single user by ID (.*)")]
@@ -35,7 +35,7 @@ namespace DBTesting.DB.StepDefinitions
         {
             var user = _repo.Repository.Get(id);
 
-            _scenarioContext.Add("userByID", user);
+            _scenarioContext.Add(DBLabels.userByID, user);
         }
 
 
@@ -43,7 +43,7 @@ namespace DBTesting.DB.StepDefinitions
         public void WhenGetFirstUser()
         {
             var firstUser = _repo.Repository.GetFirst();
-            _scenarioContext.Add("firstUserID", firstUser.Id);
+            _scenarioContext.Add(DBLabels.firstUserID, firstUser.Id);
         }
 
         [When(@"I Get user by email '(.*)'")]
@@ -51,7 +51,7 @@ namespace DBTesting.DB.StepDefinitions
         {
             var user = _repo.Repository.Get(e => e.Email.Equals(email)).FirstOrDefault();
 
-            _scenarioContext.Add("returnedUserEmail", user.Email);
+            _scenarioContext.Add(DBLabels.returnedUserEmail, user.Email);
         }
 
         [When(@"Get users by email containing '(.*)'")]
@@ -59,20 +59,20 @@ namespace DBTesting.DB.StepDefinitions
         {
             var usersIEnum = _repo.Repository.Get(entity => entity.Email.Contains(phrase));
 
-            _scenarioContext.Add("usersContainPhrase", usersIEnum);
+            _scenarioContext.Add(DBLabels.usersContainPhrase, usersIEnum);
         }
 
         [Then(@"I should be able to see list of all users")]
         public void ThenIShouldBeAbleToSeeListOfAllUsers()
         {
-            var collectionMembers = _scenarioContext.Get<int>("collectionCount");
+            var collectionMembers = _scenarioContext.Get<int>(DBLabels.collectionCount);
             Assert.That(collectionMembers > 0);
         }
 
         [Then(@"I should see user with ID (.*)")]
         public void ThenIShouldSeeUserWithID(int id)
         {
-            var givenUser = _scenarioContext.Get<UserEntity>("userByID");
+            var givenUser = _scenarioContext.Get<UserEntity>(DBLabels.userByID);
             Assert.That(givenUser.Id, Is.EqualTo(id), "Returned ID is not correct");
         }
 
@@ -81,16 +81,15 @@ namespace DBTesting.DB.StepDefinitions
         {
             var dbSet = _repo.Repository.GetAll();
             var firstUser = dbSet.First();
-            var returnedFirstUserID = _scenarioContext.Get<int>("firstUserID");
+            var returnedFirstUserID = _scenarioContext.Get<int>(DBLabels.firstUserID);
 
-            //TODO: think about error msg
-            Assert.That(returnedFirstUserID, Is.EqualTo(firstUser.Id), "error");
+            Assert.That(returnedFirstUserID, Is.EqualTo(firstUser.Id), "Returned first user ID is not correct");
         }
 
         [Then(@"I should see user with the same '(.*)'")]
         public void ThenIShouldSeeUserWithTheSameEmail(string email)
         {
-            var returnedUserEmail = _scenarioContext.Get<string>("returnedUserEmail");
+            var returnedUserEmail = _scenarioContext.Get<string>(DBLabels.returnedUserEmail);
 
             Assert.AreEqual(returnedUserEmail, email);
         }
@@ -98,7 +97,7 @@ namespace DBTesting.DB.StepDefinitions
         [Then(@"I should see all users that contain this '(.*)' in their emails")]
         public void ThenIShouldSeeAllUsersThatContainThis(string phrase)
         {
-            var users = _scenarioContext.Get<IEnumerable<UserEntity>>("usersContainPhrase");
+            var users = _scenarioContext.Get<IEnumerable<UserEntity>>(DBLabels.usersContainPhrase);
 
             foreach (var user in users)
             {

@@ -36,7 +36,7 @@ namespace DBTesting.REST.Utils
             return _restClient.ExecuteAsync<User>(_request).Result;
         }
 
-        public RestResponse<User> PutSingleUser(int id, User user)
+        public RestResponse<User> UpdateSingleUser(int id, User user)
         {
             _request = new RestRequest($"{ConfigurationProvider.GetValue[ConfigurationLabels.UsersEndPoint]}/{id}", Method.Put)
                 .AddJsonBody(user);

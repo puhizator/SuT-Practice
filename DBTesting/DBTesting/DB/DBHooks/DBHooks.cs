@@ -13,7 +13,7 @@ namespace DBTesting.DB.Hooks
         [Scope(Tag = "DB")]
         public static void FeatureSetUp(FeatureContext featureContext)
         {
-            featureContext.Add(Labels.MainRepository, new MainRepository());
+            featureContext.Add(DBLabels.MainRepository, new MainRepository());
         }
 
         [AfterScenario]
@@ -21,7 +21,7 @@ namespace DBTesting.DB.Hooks
 
         public static void DeleteUser(ScenarioContext scenarioContext, MainRepository repo)
         {
-            repo.Repository.Delete(scenarioContext.Get<int>("lastUserID"));
+            repo.Repository.Delete(scenarioContext.Get<int>(DBLabels.lastUserID));
         }
 
         [AfterScenario]
@@ -29,7 +29,7 @@ namespace DBTesting.DB.Hooks
 
         public static void DeleteUsers(ScenarioContext scenarioContext, MainRepository repo)
         {
-            var usersForDeletion = scenarioContext.Get<List<UserEntity>>("usersToBeDeleted");
+            var usersForDeletion = scenarioContext.Get<List<UserEntity>>(DBLabels.usersToBeDeleted);
 
             repo.Repository.DeleteRange(usersForDeletion);
         }
