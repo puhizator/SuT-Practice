@@ -3,15 +3,18 @@ using TechTalk.SpecFlow;
 
 namespace DBTesting.WEB.WebHooks
 {
+    [Binding]
     internal sealed class Hooks
     {
-        [BeforeScenario("web")]
+        [BeforeScenario]
+        [Scope(Tag = "web")]
         private void FirstBeforeScenario()
         {
             WebDriverProvider.InitChromeDriver();
         }
 
-        [AfterScenario("web")]
+        [AfterScenario]
+        [Scope(Tag = "web")]
         private void AfterScenario()
         {
             WebDriverProvider.GetChromeDriver().Dispose();

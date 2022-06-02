@@ -1,12 +1,15 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
+using NUnit.Framework;
 
 namespace DBTesting.WEB.WebContext
 {
     internal class WebDriverProvider
     {
         private static IWebDriver _driver;
+
+        [SetUp]
         internal static void InitChromeDriver()
         {
             ChromeOptions options = new ChromeOptions();

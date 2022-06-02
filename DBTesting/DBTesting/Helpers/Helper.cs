@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DBTesting.Helpers
 {
     internal class Helper
-    {        internal static string GetRandomEmail()
+    {
+        internal static string GetRandomEmail()
         {
             Random random = new Random();
 

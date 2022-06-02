@@ -8,18 +8,18 @@ namespace DBTesting.WEB.Actions
 {
     internal class BaseUserActions
     {
-        internal IWebDriver _driver;
+        private IWebDriver _driver;
         private WebDriverWait _wait;
 
         public BaseUserActions()
         {
             _driver = WebDriverProvider.GetChromeDriver();
-            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(int.Parse(ConfigurationProvider.GetValue[WebLabels.DefaultImplicitTimeout])));
         }
 
         internal void OpenPage(string pageName)
         {
             _driver.Navigate().GoToUrl(pageName);
+            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(int.Parse(ConfigurationProvider.GetValue[ConfigurationLabels.DefaultImplicitTimeout])));
         }
 
         internal void TypesInto(By elementLocator, string text)
