@@ -14,12 +14,10 @@ namespace DBTesting.WEB.StepDefinitions
     public class RegisterStepDefinitions
     {
         private BaseUserActions _webUser;
-        ScenarioContext _scenarioContext;
 
-        internal RegisterStepDefinitions(ScenarioContext scenarioContext)
+        internal RegisterStepDefinitions()
         {
             _webUser = new BaseUserActions();
-            _scenarioContext = scenarioContext;
         }
 
         [Given(@"I navigate to registration page")]

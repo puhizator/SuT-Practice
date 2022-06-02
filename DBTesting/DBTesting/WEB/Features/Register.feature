@@ -1,7 +1,6 @@
 ﻿@web
 Feature: Register
 
-@successfulregistration
 Scenario: Successful registration with new user
     Given I navigate to registration page
     When I enter the following data for registration:
@@ -11,7 +10,6 @@ Scenario: Successful registration with new user
     And I click on register button
     Then I should see Welcome user message
     
-@unsuccessfulregistration
 Scenario: Unsuccessful registration with existing user
     Given I navigate to registration page
     When I enter the following data for registration:

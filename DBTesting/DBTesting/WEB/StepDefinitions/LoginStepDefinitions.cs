@@ -11,13 +11,10 @@ namespace DBTesting.WEB.StepDefinitions
     public class LoginStepDefinitions
     {
         private BaseUserActions _webUser;
-        ScenarioContext _scenarioContext;
 
-
-        internal LoginStepDefinitions(ScenarioContext scenarioContext)
+        internal LoginStepDefinitions()
         {
-            _webUser = new BaseUserActions();
-            _scenarioContext = scenarioContext;
+            _webUser = new BaseUserActions();    
         }
 
         [Given(@"I navigate to login page")]

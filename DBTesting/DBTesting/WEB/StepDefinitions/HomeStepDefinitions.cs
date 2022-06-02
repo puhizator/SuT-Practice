@@ -10,12 +10,10 @@ namespace DBTesting.WEB.StepDefinitions
     internal class HomeStepDefinitions
     {
         private BaseUserActions _webUser;
-        ScenarioContext _scenarioContext;
 
-        internal HomeStepDefinitions(ScenarioContext scenarioContext)
+        internal HomeStepDefinitions()
         {
-            _webUser = new BaseUserActions();
-            _scenarioContext = scenarioContext;
+            _webUser = new BaseUserActions(); 
         }
 
         [Then(@"I should see Welcome user message")]

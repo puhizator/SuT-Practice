@@ -9,7 +9,7 @@ namespace DBTesting.WEB.WebPages
 {
     internal class HomePage
     {
-        public static readonly By WELCOME_MESSAGE = By.XPath("//h1");
+        public static readonly By WELCOME_MESSAGE = By.ClassName("jumbotron");
 
         public static readonly By NAVBAR_HEADER = By.XPath("//div[@class='navbar-header']");
         
