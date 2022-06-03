@@ -14,12 +14,12 @@ namespace DBTesting.WEB.Actions
         public BaseUserActions()
         {
             _driver = WebDriverProvider.GetChromeDriver();
+            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(int.Parse(ConfigurationProvider.GetValue[ConfigurationLabels.DefaultImplicitTimeout])));
         }
 
         internal void OpenPage(string pageName)
         {
             _driver.Navigate().GoToUrl(pageName);
-            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(int.Parse(ConfigurationProvider.GetValue[ConfigurationLabels.DefaultImplicitTimeout])));
         }
 
         internal void TypesInto(By elementLocator, string text)
