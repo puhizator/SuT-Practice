@@ -12,7 +12,7 @@ namespace DBTesting.Configurations
             GetValue = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
-                 .Build();
+                .Build();
         }
     }
 }
