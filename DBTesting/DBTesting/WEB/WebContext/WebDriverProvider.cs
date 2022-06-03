@@ -9,7 +9,6 @@ namespace DBTesting.WEB.WebContext
     {
         private static IWebDriver _driver;
 
-        [SetUp]
         internal static void InitChromeDriver()
         {
             ChromeOptions options = new ChromeOptions();

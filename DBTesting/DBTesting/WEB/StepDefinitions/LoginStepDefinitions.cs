@@ -44,5 +44,19 @@ namespace DBTesting.WEB.StepDefinitions
             Assert.AreEqual(WebLabels.InvalidUserExpectedMessage, errorMessage.Text);
         }
 
+        [Then(@"I should see Welcome user message")]
+        public void ThenIShouldSeeWelcomeUserMessage()
+        {
+            var welcomeMessage = _webUser.Find(HomePage.WELCOME_MESSAGE);
+            var navBar = _webUser.Find(HomePage.NAVBAR_HEADER);
+            var navBarButtons = _webUser.Find(HomePage.WELCOME_MESSAGE);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(welcomeMessage.Displayed);
+                Assert.AreEqual(WebLabels.NavBarHeader, navBar.Text);
+                Assert.That(navBarButtons.Displayed);
+            });
+        }
     }
 }

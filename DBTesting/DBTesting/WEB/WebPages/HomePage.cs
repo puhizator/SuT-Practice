@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 
 namespace DBTesting.WEB.WebPages
 {
@@ -12,7 +7,7 @@ namespace DBTesting.WEB.WebPages
         public static readonly By WELCOME_MESSAGE = By.ClassName("jumbotron");
 
         public static readonly By NAVBAR_HEADER = By.XPath("//div[@class='navbar-header']");
-        
+
         public static readonly By NAVBAR_BUTTONS = By.XPath("//ul[@class='nav navbar-nav']");
     }
 }
