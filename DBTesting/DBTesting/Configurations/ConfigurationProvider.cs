@@ -13,6 +13,8 @@ namespace DBTesting.Configurations
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
+            // :)
+            // :) :)
         }
     }
 }
